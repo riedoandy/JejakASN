@@ -1,0 +1,1624 @@
+{
+  "name": "JEJAKASN",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "4b8f21f3-091c-4382-9c87-f839419bba35",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -4192,
+        1248
+      ],
+      "webhookId": "114d80e4-6efd-48dd-9fbc-18ff6f4f2565",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('save_individual').item.json.chatID }}",
+        "text": "=AKTIVITAS {{ $json.Nama }} BERHASIL DISIMPAN!\nIndikator BerAKHLAK : {{ $('save_individual').item.json.Berakhlak }}\nMendukung Probis Dinas : {{ $('save_individual').item.json['Probisnya Apa'] }}\nMendukung Pokin Dinas  : {{ $('save_individual').item.json['Pokin Yang Mana'] }}\n\nLihat Detail Aktivitas Anda ? Ketik /lihat",
+        "additionalFields": {}
+      },
+      "id": "fde5787c-8d55-486b-8820-df4b54b9b94e",
+      "name": "Success Save",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        96,
+        1376
+      ],
+      "webhookId": "a1c11c20-b8c3-46d1-a9c7-606be89a992c",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.employee.NamaFile }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "056b2829-7ad1-4423-b15f-d22225801f52",
+      "name": "Check Individual Spreadsheet",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1392,
+        1392
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Ambil Data Code').item.json.chatID }}",
+        "text": "=File Individual Tidak Tersedia\n\n• Anda belum memiliki file aktivitas individual\n• File belum dibuat oleh admin\n\nSolusi:\n• Hubungi bagian IT untuk pembuatan file individual\n• Minta admin untuk menambahkan NamaFile di database pegawai\n\nKontak: \nBagian IT Disbudpar Jatim \nKetik /start setelah file dibuat",
+        "additionalFields": {}
+      },
+      "id": "4dce9343-9d90-4e46-a93f-58719f849c05",
+      "name": "No Individual File Error",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        1696
+      ],
+      "webhookId": "3b8a9c1d-2e4f-5a6b-8c9d-1e2f3a4b5c6d",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Input Data Aktivitas ke Sheet",
+        "height": 1040,
+        "width": 1888,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1488,
+        1280
+      ],
+      "typeVersion": 1,
+      "id": "4e24db78-e18c-42f3-96c0-3890b0d52acc",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI",
+          "mode": "list",
+          "cachedResultName": "Data Dummy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1829566436,
+          "mode": "list",
+          "cachedResultName": "Aktivitas_sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI/edit#gid=1829566436"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nip": "={{ $json.Nip }}",
+            "Nama": "={{ $json.Nama }}",
+            "Aktivitas": "={{ $json.Aktivitas }}",
+            "Tanggal": "={{ $json.Tanggal }}",
+            "chatID": "={{ $json.chatID }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nip",
+              "displayName": "Nip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aktivitas",
+              "displayName": "Aktivitas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tanggal",
+              "displayName": "Tanggal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chatID",
+              "displayName": "chatID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -96,
+        1376
+      ],
+      "id": "e8e8ab09-7a54-423b-b88e-6ecaa1659e65",
+      "name": "Save to Rekapan Umum",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oem-koGzbdzFFox2Ey7dFyqBxbnrKdibXCqyyjj-Qlc",
+          "mode": "list",
+          "cachedResultName": "Data Dari n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oem-koGzbdzFFox2Ey7dFyqBxbnrKdibXCqyyjj-Qlc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1824349580,
+          "mode": "list",
+          "cachedResultName": "Indikator_Berakhlak",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oem-koGzbdzFFox2Ey7dFyqBxbnrKdibXCqyyjj-Qlc/edit#gid=1824349580"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -672,
+        1600
+      ],
+      "id": "72852954-83e5-49aa-bf27-96973f27cad4",
+      "name": "indikator_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rrdKhdHtzN5bdcAl",
+          "name": "GaweyBotGS"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Code').item.json.originalData.employee.NamaFile }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gdJFkuvl3kDBRPjASX3dzBXTtUbiNc8wqXccQrqqYnA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nip": "={{ $('Code').item.json.originalData.employee.Nip }}",
+            "Nama": "={{ $('Code').item.json.originalData.employee.Nama }}",
+            "Aktivitas": "={{ $('Code').item.json.originalData.aktivitas }}",
+            "Tanggal": "={{ $('Code').item.json.originalData.Tanggal }}",
+            "Berakhlak": "={{ $json.aiOriginalOutput.berakhlak }}",
+            "chatID": "={{ $('Code').item.json.originalData.chatID }}",
+            "Mendukung Probis": "={{ $json.aiOriginalOutput.mendukung_probis }}",
+            "Mendukung Pokin": "={{ $json.aiOriginalOutput.mendukung_pokin }}",
+            "Probisnya Apa": "={{ $json.aiOriginalOutput.subkegiatan_probis }}",
+            "Pokin Yang Mana": "={{ $json.aiOriginalOutput.pokin_indikator }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nip",
+              "displayName": "Nip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aktivitas",
+              "displayName": "Aktivitas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tanggal",
+              "displayName": "Tanggal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Berakhlak",
+              "displayName": "Berakhlak",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chatID",
+              "displayName": "chatID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mendukung Probis",
+              "displayName": "Mendukung Probis",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mendukung Pokin",
+              "displayName": "Mendukung Pokin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Probisnya Apa",
+              "displayName": "Probisnya Apa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pokin Yang Mana",
+              "displayName": "Pokin Yang Mana",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "d5ade0b6-4f7d-44b2-8ebd-5fc53c8f2574",
+      "name": "save_individual",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -288,
+        1376
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "={\n  \"indikator\": \"\",\n  \"instrumen\": \"\",\n  \"berakhlak\": \"\",\n  \"mendukung_probis\": \"\",\n  \"mendukung_pokin\": \"\",\n  \"subkegiatan_probis\" : \"\",\n  \"pokin_indikator\": \"\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        1616
+      ],
+      "id": "0efc75b3-cc3d-47d3-9962-01bcf5658e13",
+      "name": "outputparser",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatID }}",
+        "text": "=Harap menunggu! Mohon untuk tidak mengirim pesan sampai saya mengonfirmasi pencatatan aktivitas Anda telah berhasil.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        1376
+      ],
+      "id": "ff2ab83c-82e9-4438-93da-7b4f02db4a64",
+      "name": "Send a text message",
+      "webhookId": "86874394-236c-43fa-ae19-0af52405f842",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node ini memproses aktivitas untuk membantu AI Agent\nconst aktivitas = $('Check Individual Spreadsheet').first().json.aktivitas\nconst jabatan = $('Check Individual Spreadsheet').item.json.employee.Jabatan || 'Staff';\n\n// Ekstrak kata kunci potensial\nconst keywordMap = {\n  kolaborasi: [\n    'kerjasama', 'koordin', 'tim', 'bersama', 'gotong', 'bantu', 'diskusi', 'rapat',\n    'sinergi', 'berbagi', 'partisipasi', 'kontribusi', 'bermitra', 'musyawarah', 'kompak'\n  ],\n  berorientasi_pelayanan: [\n    'layanan', 'pelanggan', 'masyarakat', 'publik', 'tepat waktu', 'deadline', 'cepat', 'responsif',\n    'ramah', 'melayani', 'kepuasan', 'perhatian', 'tanggap', 'efisien', 'empati', 'solutif'\n  ],\n  akuntabel: [\n    'lapor', 'pertanggung', 'transparan', 'jelas', 'dokumentasi', 'bukti', 'verifikasi',\n    'audit', 'data', 'tercatat', 'objektif', 'disiplin', 'valid', 'keterbukaan', 'standar'\n  ],\n  kompeten: [\n    'ahli', 'terampil', 'profesional', 'teknis', 'keahlian', 'analisis', 'pelajar', 'belajar',\n    'pengalaman', 'kinerja', 'produktif', 'efektif', 'kompetensi', 'terlatih', 'evaluasi'\n  ],\n  harmonis: [\n    'rukun', 'damai', 'toleran', 'hormat', 'sopan', 'inklusif', 'menghargai',\n    'saling', 'empati', 'peduli', 'gotong royong', 'kekeluargaan', 'kebersamaan', 'positif'\n  ],\n  loyal: [\n    'setia', 'dedikasi', 'komitmen', 'integritas', 'jujur', 'konsisten',\n    'disiplin', 'patuh', 'taat', 'kepercayaan', 'tanggung jawab', 'stabil', 'berprinsip'\n  ],\n  adaptif: [\n    'fleksibel', 'inovasi', 'kreatif', 'perubahan', 'baru', 'modern', 'digital',\n    'teknologi', 'transformasi', 'terupdate', 'dinamis', 'progresif', 'berkembang', 'relevan'\n  ],\n  kolaboratif: [\n    'komunikasi', 'informasi', 'koordinasi', 'sinergi', 'integrasi',\n    'diskusi', 'kolaborasi', 'berbagi ide', 'kemitraan', 'interaksi', 'support', 'kerja sama lintas'\n  ]\n};\n\n// Deteksi kata kunci\nconst detectedKeywords = {};\nconst aktivitasLower = aktivitas.toLowerCase();\n\nfor (const [category, keywords] of Object.entries(keywordMap)) {\n  const found = keywords.filter(kw => aktivitasLower.includes(kw));\n  if (found.length > 0) {\n    detectedKeywords[category] = found;\n  }\n}\n\n// Analisis panjang dan kompleksitas\nconst wordCount = aktivitas.split(/\\s+/).length;\nconst hasNumbers = /\\d/.test(aktivitas);\nconst hasTimeReference = /deadline|tepat waktu|pagi|siang|sore|tanggal|hari|minggu|bulan/.test(aktivitasLower);\n\n// Context hints berdasarkan jabatan\nconst jabatanHints = {\n  'Kepala': ['kompeten', 'akuntabel', 'berorientasi_pelayanan'],\n  'Manager': ['kolaborasi', 'kompeten', 'adaptif'],\n  'Staff': ['berorientasi_pelayanan', 'kompeten', 'kolaborasi'],\n  'Admin': ['berorientasi_pelayanan', 'akuntabel', 'adaptif']\n};\n\nconst jabatanKey = Object.keys(jabatanHints).find(key => jabatan.includes(key)) || 'Staff';\nconst suggestedCategories = jabatanHints[jabatanKey];\n\nreturn [{\n  json: {\n    aktivitas: aktivitas,\n    jabatan: jabatan,\n    detectedKeywords: detectedKeywords,\n    suggestedCategories: suggestedCategories,\n    metadata: {\n      wordCount: wordCount,\n      hasNumbers: hasNumbers,\n      hasTimeReference: hasTimeReference,\n      complexity: wordCount > 10 ? 'complex' : 'simple'\n    },\n    // Data asli untuk proses selanjutnya\n    originalData: $('Check Individual Spreadsheet').item.json\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        1376
+      ],
+      "id": "80c78d85-f7a0-4e74-a172-0467680c5b28",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validasi output AI Agent dan berikan fallback jika perlu\nconst aiOutput = $json.output;\nconst aktivitas = $('Check Individual Spreadsheet').first().json.aktivitas\n\n// Daftar indikator valid (sesuaikan dengan data Anda)\nconst validIndikators = [\n  'Berorientasi Pelayanan',\n  'Akuntabel',\n  'Kompeten',\n  'Harmonis',\n  'Loyal',\n  'Adaptif',\n  'Kolaboratif'\n];\n\n// Cek apakah output valid\nlet finalIndikator = aiOutput.indikator || \"\";\nlet finalInstrumen = aiOutput.instrumen;\n\nif (!finalIndikator || finalIndikator === '' || finalIndikator === 'null') {\n  // Fallback ke analisis sederhana berdasarkan keyword\n  const aktivitasLower = aktivitas.toLowerCase();\n  \n  if (aktivitasLower.includes('kerjasama') || aktivitasLower.includes('tim') || aktivitasLower.includes('koordin')) {\n    finalIndikator = 'Kolaboratif';\n    finalInstrumen = 'Melakukan kerjasama tim dalam menyelesaikan tugas';\n  } else if (aktivitasLower.includes('lapor') || aktivitasLower.includes('deadline') || aktivitasLower.includes('tepat waktu')) {\n    finalIndikator = 'Berorientasi Pelayanan';\n    finalInstrumen = 'Menyelesaikan tugas dengan tepat waktu';\n  } else if (aktivitasLower.includes('analisis') || aktivitasLower.includes('ahli') || aktivitasLower.includes('teknis')) {\n    finalIndikator = 'Kompeten';\n    finalInstrumen = 'Menunjukkan keahlian teknis dalam bidang tugasnya';\n  } else {\n    // Default fallback\n    finalIndikator = 'Berorientasi Pelayanan';\n    finalInstrumen = 'Melaksanakan tugas dengan baik';\n  }\n}\n\n// Validasi apakah indikator termasuk dalam daftar valid\nif (!validIndikators.includes(finalIndikator)) {\n  // Cari yang paling mirip atau gunakan default\n  finalIndikator = 'Berorientasi Pelayanan';\n  finalInstrumen = 'Melaksanakan tugas dengan baik';\n}\n\nreturn [{\n  json: {\n    indikator: finalIndikator,\n    instrumen: finalInstrumen,\n    aiOriginalOutput: aiOutput,\n    isFallback: !aiOutput.indikator || aiOutput.indikator === '',\n    aktivitas: aktivitas\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        1376
+      ],
+      "id": "02aa8767-d97d-45c2-b732-fb832088f076",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.3,
+          "topP": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1088,
+        2128
+      ],
+      "id": "df11eb6b-60f4-4b55-9368-84af1a9846b0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "h4zNeaaj47oUoj6J",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.5,
+          "topP": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        1584
+      ],
+      "id": "06f17c1f-f71d-4cd9-a30f-d8aad7ffaba8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CvpcgSt9pL4pYSXp",
+          "name": "Gemini Erakas Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "099283a7-0069-4adf-be35-34c11a3d449d",
+                    "leftValue": "={{ $json.isStartCommand }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.isDownloadCommand }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "da2f9afc-40a0-4e22-955f-a4337e62a20f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/lihat"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a7d1ae28-1abc-4f2f-b66a-5112b6bfe0f4",
+                    "leftValue": "={{ $json.isGenerateReport }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/generate"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "129c0268-2829-4fb0-affa-2a5f3394a5ec",
+                    "leftValue": "={{ $json.error }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "error"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b12c10ff-d963-404f-bded-235c423ab2d2",
+                    "leftValue": "={{ $json.error || $json.isHelp }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "catat aktivitas"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "80af831b-b030-4d5c-bd4e-d2c66512dd75",
+                    "leftValue": "={{ $json.isHelp }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/help"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -2608,
+        1152
+      ],
+      "id": "3dca9acc-b504-4c89-abe7-972d819ccfba",
+      "name": "Cek Command1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "=ID Telegram Anda belum terdaftar dalam sistem. Silahkan registrasi terlebih dahulu melalui https://s.id/registrasiGaweyBot\n\nTerdapat Kesusahan ? Silahkan Kontak: \nBagian IT Disbudpar Jatim \n\nKetik /start setelah ID didaftarkan",
+        "additionalFields": {}
+      },
+      "id": "0cd5fc09-0482-4ee2-bb1a-90c39c6637dc",
+      "name": "Send Message ChatID Not Found",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -2912,
+        1424
+      ],
+      "webhookId": "270c5ec3-6cbb-428c-9b01-2248a544b7ed",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.found }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "cd88e233-7ed3-4e1f-8cc4-4d36f313ca1d",
+      "name": "Check Employee Found ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -3120,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI",
+          "mode": "list",
+          "cachedResultName": "Data Dummy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2037082674,
+          "mode": "list",
+          "cachedResultName": "Data_Pegawai",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI/edit#gid=2037082674"
+        },
+        "options": {}
+      },
+      "id": "d6e824d6-d9a5-441d-8aa9-5229f8bf0f54",
+      "name": "Get Employees",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -3536,
+        1232
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "=Selamat datang di JEJAKASN (Jejaring Elektronik Jurnal Aktivitas Kinerja ASN)!\n\nTuliskan aktivitas harian anda dengan format kalimat deskriptif yang memuat: Siapa yang terlibat, apa yang dilakukan, dan apa hasil/dampaknya.\n\nContoh:\nSaya dan Pak Budi melakukan pendampingan lapangan terhadap kelompok Asosiasi profesi, dalam rangka audiensi prosedur izin usaha, dengan hasil masukan/saran perbaikan terhadap kemudahan perizinan berusaha\n\n** Catatan **:\n1. Tulis dengan jelas dan detail\n2. Apabila dalam 1 hari terdapat beberapa aktivitas, maka input lagi aktivitas tersebut\n3. Jangan sembarangan input karena nip dan akun bisa terblacklist",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "5f3dd7dc-bfda-4457-8fc2-6c95df501114",
+      "name": "Send Message /start",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -2368,
+        608
+      ],
+      "webhookId": "8e53f566-805c-4948-b834-13659ea6fcf1",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Download Aktivitas",
+        "height": 320,
+        "width": 640,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2160,
+        720
+      ],
+      "typeVersion": 1,
+      "id": "4b276a64-0f59-4e7c-82ee-b9d57416b163",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI",
+          "mode": "list",
+          "cachedResultName": "Data Dummy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2037082674,
+          "mode": "list",
+          "cachedResultName": "Data_Pegawai",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ymfiXarALa24nBPcJIzuyi9zsE7XkNlQES1y031NUHI/edit#gid=2037082674"
+        },
+        "options": {}
+      },
+      "id": "f8706d3a-7e5b-451b-b606-bbebb3efbb03",
+      "name": "Get Employees for Download",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -2080,
+        816
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const chatId = $node[\"Telegram Trigger\"].json.message.chat.id;\nconst employees = $input.all();\n\nconst chatIdFields = ['IDtelegram'];\nlet employeeFound = null;\n\nfor (const emp of employees) {\n    for (const chatField of chatIdFields) {\n        if (emp.json[chatField] && String(emp.json[chatField]).trim() === String(chatId).trim()) {\n            employeeFound = emp;\n            break;\n        }\n    }\n    if (employeeFound) break;\n}\n\nif (!employeeFound) {\n    return [{\n        json: {\n            found: false,\n            chatId: chatId,\n            message: \"Chat ID Tidak Terdaftar\\n\\n• Chat ID Telegram Anda belum terdaftar dalam sistem\\n• Akun belum diregistrasi oleh admin\\n\\nSolusi:\\n• Hubungi bagian IT untuk registrasi\\nKontak: \\nBagian IT Disbudpar Jatim \\nKetik /start setelah Chat ID didaftarkan\"\n        }\n    }];\n}\n\nconst employee = employeeFound.json;\nconst employeeName = employee.Nama || employee.nama || employee.NAMA || 'Tidak diketahui';\nconst employeeNip = employee.Nip || employee.NIP || employee.nip || 'Tidak diketahui';\nconst linkFile = employee.LinkFile || null;\nconst namaFile = employee.NamaFile || null;\n\nif (!linkFile) {\n    return [{\n        json: {\n            found: true,\n            hasLink: false,\n            chatId: chatId,\n            employeeName: employeeName,\n            employeeNip: employeeNip,\n            message: \"File Tidak Tersedia\\n\\n\" + employeeName + \"\\nNIP: \" + employeeNip + \"\\n\\n• Anda belum memiliki file aktivitas pribadi\\n• File aktivitas belum dibuat oleh admin\\n\\nSolusi:\\n• Hubungi bagian IT untuk pembuatan file\\nKontak: \\nBagian IT Disbudpar Jatim \\n(Riedo, Gayatri, Cornel)\\n\\n\"\n        }\n    }];\n}\n\nreturn [{\n    json: {\n        found: true,\n        hasLink: true,\n        chatId: chatId,\n        employeeName: employeeName,\n        employeeNip: employeeNip,\n        linkFile: linkFile,\n        namaFile: namaFile,\n        message: \"Lihat File Aktivitas\\n\\n\" + employeeName + \"\\nNIP: \" + employeeNip + \"\\n\\nFile Aktivitas Anda:\\n\" + linkFile + \"\\n\\nInformasi File:\\n• File berisi semua aktivitas yang telah Anda input\\n• File diupdate otomatis setiap kali input aktivitas\\n\\nCatatan: Jika file tidak dapat diakses, hubungi IT Disbudpar Jatim\"\n    }\n}];"
+      },
+      "id": "8018f0b4-d217-47b4-9c8a-11251bb0f4d0",
+      "name": "Process Download Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "93dcdc1d-2505-4e39-ac88-e85986f2fe5d",
+      "name": "Send Download Response",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        816
+      ],
+      "webhookId": "0d61938f-55c5-40a4-8ef3-c98a20ea0266",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const message = $('Telegram Trigger').first().json.message.text;\nconst chatId = $input.first().json.chatID;\n\nif (message.startsWith('/')) {\n  const helpCommands = ['/help'];\n  if (helpCommands.includes(message.toLowerCase())) {\n    return [{\n      json: {\n        isHelp: true,\n        chatId: chatId,\n        message: \"Bantuan Bot Aktivitas\\n\\nCara menggunakan:\\n1. Ketik /start untuk memulai\\n2. Tulis aktivitas Anda langsung\\n3. Ketik /lihat untuk melihat daftar aktivitas\\n\\nContoh:\\nMengerjakan laporan harian\\n\\nPenting:\\n• Aktivitas minimal 5 karakter\\n• Tulis dengan jelas dan detail\\n\\nCommand tersedia:\\n• /start - Input aktivitas baru\\n• /lihat - Lihat daftar aktivitas Anda\\n\\n• /help - Bantuan penggunaan\\n• Bantuan Lainnya Hubungi IT Disbudpar\\n\\nKetik /start untuk mulai input aktivitas!\"\n      }\n    }];\n  }\n\n  if (message.toLowerCase() === '/start') {\n    return [{\n      json: {\n        isStartCommand: true,\n        chatId: chatId,\n        message: $('Cek Perintah User').first().json.message\n      }\n    }];\n  }\n \n  \n  if (message.toLowerCase() === '/lihat') {\n    return [{\n      json: {\n        isDownloadCommand: true,\n        chatId: chatId,\n        message: $('Cek Perintah User').first().json.message\n      }\n    }];\n  }\n\n  if (message.toLowerCase() === '/generate') {\n  return [{\n    json: {\n      isGenerateReport: true,\n      chatId: chatId\n    }\n  }];\n}\n\n  \n  return [{\n    json: {\n      error: true,\n      chatId: chatId,\n      message: \"Perintah tidak dikenali!\\n\\nCommand yang tersedia:\\n• /start - Input aktivitas baru\\n• /lihat - Lihat file aktivitas\\n• /help - Bantuan penggunaan\\n\\nKetik /start untuk mulai!\"\n    }\n  }];\n}\n\n// const helpKeywords = ['help'];\n// const isHelpRequest = helpKeywords.some(keyword => message.toLowerCase().includes(keyword));\n\n// if (isHelpRequest) {\n//   return [{\n//     json: {\n//       isHelp: true,\n//       chatId: chatId,\n//       message: \"Bantuan Bot Aktivitas\\n\\nCara menggunakan:\\n1. Ketik /start untuk memulai\\n2. Tulis aktivitas Anda langsung\\n3. Ketik /lihat untuk melihat daftar aktivitas\\n\\nContoh:\\nMengerjakan laporan harian\\n\\nPenting:\\n• Aktivitas minimal 5 karakter\\n• Tulis dengan jelas dan detail\\n\\nCommand tersedia:\\n• /start - Input aktivitas baru\\n• /lihat - Lihat daftar aktivitas Anda\\n\\n• /help - Bantuan penggunaan\\n• Bantuan Lainnya Hubungi IT Disbudpar\\n\\nKetik /start untuk mulai input aktivitas!\"\n//     }\n//   }];\n// }\n\nreturn [{\n  json: {\n    error: false,\n    message: $json.message,\n    needsParsing: true\n  }\n}];"
+      },
+      "id": "ab0b0758-5eb2-42c7-b1e9-b5511bad60ef",
+      "name": "Handle Unknown pesan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2832,
+        1216
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "id": "32609451-a942-41ae-91fa-a3825254ec03",
+      "name": "Kirim Pesan Error",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -2256,
+        1200
+      ],
+      "webhookId": "085688e0-feb7-4db7-8e87-c3b6476cc033",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "id": "d00b50bd-f511-4cb3-80e7-8e4738ab4f68",
+      "name": "Kirim Pesan /help",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -2416,
+        1504
+      ],
+      "webhookId": "085688e0-feb7-4db7-8e87-c3b6476cc033",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.error }}"
+            }
+          ]
+        }
+      },
+      "id": "ce283596-c1e2-4475-8847-b3d3ccf61abf",
+      "name": "Check Input Valid",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -2160,
+        1392
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Verify ChatID').item.json.chatID }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "id": "1cf8b920-a911-422b-aee6-c4cd36f440e5",
+      "name": "Pesan Error",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        1584
+      ],
+      "webhookId": "085688e0-feb7-4db7-8e87-c3b6476cc033",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const message = $json.message.text;\nconst chatId = $json.message.chat.id;\nconst telegramUser = $json.message.from;\n\nconst telegramUserId = telegramUser.id;\nconst telegramUsername = telegramUser.username || null;\nconst telegramFirstName = telegramUser.first_name || '';\nconst telegramLastName = telegramUser.last_name || '';\n\nif (!message || message.trim() === '') {\n  return [{\n    json: {\n      error: true,\n      chatId: chatId,\n      message: \"Aktivitas tidak boleh kosong!\\n\\nSilakan tulis aktivitas Anda\\nContoh: Mengerjakan laporan harian\\n\\nKetik /start untuk memulai.\"\n    }\n  }];\n}\n\nconst aktivitas = message.trim();\n\nif (aktivitas.length < 5) {\n  return [{\n    json: {\n      error: true,\n      chatId: chatId,\n      message: \"Aktivitas terlalu singkat!\\n\\nMinimal 5 karakter untuk aktivitas\\nContoh: Mengerjakan laporan harian\\n\\nKetik /start untuk memulai ulang.\"\n    }\n  }];\n}\n\nif (aktivitas.length > 200) {\n  return [{\n    json: {\n      error: true,\n      chatId: chatId,\n      message: \"Aktivitas terlalu panjang!\\n\\nMaksimal 200 karakter untuk aktivitas\\n\\nKetik /start untuk memulai ulang.\"\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    error: false,\n    aktivitas: aktivitas,\n    chatId: chatId,\n    telegramUser: {\n      userId: telegramUserId,\n      username: telegramUsername,\n      firstName: telegramFirstName,\n      lastName: telegramLastName,\n      fullName: `${telegramFirstName} ${telegramLastName}`.trim()\n    }\n  }\n}];"
+      },
+      "id": "bb8cafe3-637a-4520-99ba-3a3fff3c0310",
+      "name": "Cek Perintah User",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4000,
+        1248
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const parseInputData = $node[\"Cek Perintah User\"].json;\nconst aktivitas = parseInputData.aktivitas;\nconst chatId = parseInputData.chatId;\nconst telegramUser = parseInputData.telegramUser;\n\n// ✅ FIX 1: Syntax yang benar\nconst employees = $('Get Employees').all();\n\nconst chatIdFields = ['IDtelegram'];\n\n// ✅ FIX 2: DEKLARASIKAN VARIABLE INI!\nlet employeeByChatId = null;\n\nfor (const emp of employees) {\n    for (const chatField of chatIdFields) {\n        if (emp.json[chatField] && String(emp.json[chatField]).trim() === String(chatId).trim()) {\n            employeeByChatId = emp;\n            break;\n        }\n    }\n    if (employeeByChatId) break;\n}\n\nconst chatIdFound = !!employeeByChatId;\n\nif (!chatIdFound) {\n    return [{\n        json: {\n            found: false,\n            error: 'chat_id_not_found',\n            chatId: chatId,\n            telegramUser: telegramUser,\n            aktivitas: aktivitas,\n            chatid: chatIdFound\n        }\n    }];\n}\n\nconst employee = employeeByChatId.json;\nconst formattedData = {\n    found: true,\n    error: null,\n    chatId: chatId,\n    chatID: chatId,\n    telegramUser: telegramUser,\n    employee: employee,\n    aktivitas: aktivitas,\n    Nip: employee.Nip || employee.NIP || employee.nip,\n    Nama: employee.Nama || employee.nama || employee.NAMA,\n    Aktivitas: aktivitas,\n    Tanggal: new Date().toLocaleString('id-ID', {\n        timeZone: 'Asia/Jakarta',\n        weekday: 'long', \n        year: 'numeric',\n        month: 'long',\n        day: 'numeric',\n        hour: '2-digit',\n        minute: '2-digit',\n        second: '2-digit'\n    }).replace('pukul','').trim(),\n    verificationStatus: {\n        chatIdVerified: true,\n        verificationMethod: 'chat_id'\n    }\n};\n\nreturn [{ json: formattedData }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3328,
+        1232
+      ],
+      "id": "3c27b7a4-2cdd-438e-b2b8-47cf0abfe3f4",
+      "name": "Verify Pegawai"
+    },
+    {
+      "parameters": {
+        "jsCode": "const parseInputData = $node[\"Cek Perintah User\"].json;\nconst aktivitas = parseInputData.aktivitas;\nconst chatId = parseInputData.chatId;\nconst telegramUser = parseInputData.telegramUser;\n\n// ✅ PERBAIKAN DI BARIS INI\nconst employees = $('Get Employees').all();\n\nconst chatIdFields = ['IDtelegram'];\nlet employeeByChatId = null;\n\nfor (const emp of employees) {\n    for (const chatField of chatIdFields) {\n        if (emp.json[chatField] && String(emp.json[chatField]).trim() === String(chatId).trim()) {\n            employeeByChatId = emp;\n            break;\n        }\n    }\n    if (employeeByChatId) break;\n}\n\nconst chatIdFound = !!employeeByChatId;\n\nif (!chatIdFound) {\n    return [{\n        json: {\n            found: false,\n            error: 'chat_id_not_found',\n            chatId: chatId,\n            telegramUser: telegramUser,\n            aktivitas: aktivitas,\n            chatid: chatIdFound\n        }\n    }];\n}\n\nconst employee = employeeByChatId.json;\nconst formattedData = {\n    found: true,\n    error: null,\n    chatId: chatId,\n    chatID: chatId,\n    telegramUser: telegramUser,\n    employee: employee,\n    aktivitas: aktivitas,\n    Nip: employee.Nip || employee.NIP || employee.nip,\n    Nama: employee.Nama || employee.nama || employee.NAMA,\n    Aktivitas: aktivitas,\n    Tanggal: new Date().toLocaleString('id-ID', {\n        timeZone: 'Asia/Jakarta',\n        weekday: 'long', \n        year: 'numeric',\n        month: 'long',\n        day: 'numeric',\n        hour: '2-digit',\n        minute: '2-digit',\n        second: '2-digit'\n    }).replace('pukul','').trim(),\n    verificationStatus: {\n        chatIdVerified: true,\n        verificationMethod: 'chat_id'\n    }\n};\n\nreturn [{ json: formattedData }];"
+      },
+      "id": "3d9f99b3-0337-4cc5-bb69-0c85e3c78941",
+      "name": "Ambil Data Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1808,
+        1376
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.error || $json.isHelp }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "4077cc4d-786b-4654-bf55-ba2574e88226",
+      "name": "Check Message Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -3808,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "id": "b5ba0de1-d337-4fca-91a3-224bb94d218e",
+      "name": "Kirim Pesan Error1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -3552,
+        1008
+      ],
+      "webhookId": "085688e0-feb7-4db7-8e87-c3b6476cc033",
+      "credentials": {
+        "telegramApi": {
+          "id": "rU5ooMz4EIgvbaaO",
+          "name": "Parbudekraf_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1TeeWOE0yAs5sVO1ZyYCtT_0RmzImS2cHtWnBLDlt6mg",
+          "mode": "list",
+          "cachedResultName": "pokin",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TeeWOE0yAs5sVO1ZyYCtT_0RmzImS2cHtWnBLDlt6mg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 832734913,
+          "mode": "list",
+          "cachedResultName": "sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TeeWOE0yAs5sVO1ZyYCtT_0RmzImS2cHtWnBLDlt6mg/edit#gid=832734913"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -192,
+        2000
+      ],
+      "id": "63941ed6-3c3e-4a2f-a9aa-9f2429861742",
+      "name": "pokin_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1aWgYUPiHjxwAldaC0dEmO2kRvPk0KGPzyoDadkWLloE",
+          "mode": "list",
+          "cachedResultName": "probis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aWgYUPiHjxwAldaC0dEmO2kRvPk0KGPzyoDadkWLloE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1749888015,
+          "mode": "list",
+          "cachedResultName": "sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aWgYUPiHjxwAldaC0dEmO2kRvPk0KGPzyoDadkWLloE/edit#gid=1749888015"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -784,
+        2128
+      ],
+      "id": "31622365-84a2-45f6-8fd9-282dc8a1db58",
+      "name": "probis_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gemini/gemini-2.0-flash-lite",
+          "mode": "list",
+          "cachedResultName": "gemini/gemini-2.0-flash-lite"
+        },
+        "options": {
+          "temperature": 0.3,
+          "topP": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        2016
+      ],
+      "id": "ad2ba435-5fd7-4d4e-88d0-d1b45a085bd5",
+      "name": "OpenAI Model Pokin",
+      "credentials": {
+        "openAiApi": {
+          "id": "h4zNeaaj47oUoj6J",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "AI Agent Tool Untuk Proses Bisnis",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "options": {
+          "systemMessage": "=Tugas Utamamu Yakni:\nMenentukan aktivitas tersebut mendukung proses bisnis (probis) bidangnya. Analisis ini WAJIB dilakukan meskipun aktivitas tidak 100% mirip dengan data acuan.\n\nDATA YANG HARUS DIANALISIS:\nAktivitas: {{ $('Check Individual Spreadsheet').item.json.aktivitas }}\nJabatan: {{ $('Check Individual Spreadsheet').item.json.employee.Jabatan }}\nBidang: {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }}\nNIP: {{ $('Check Individual Spreadsheet').item.json.employee.Nip }}\nNama: {{ $('Check Individual Spreadsheet').item.json.employee.Nama }}\n\nSUMBER DATA:\nprobis_tool yang berada pada AI Agen Berakhlak. Didalamnya berisi daftar indikator dan instrumen BerAKHLAK.\n\nMETODE ANALISIS UNTUK probis_tool:\n1. Ekstrak Makna Inti Aktivitas : \n- Pahami secara mendalam apa yang dilakukan dalam aktivitas ASN tersebut.\n- Tentukan tujuan utama aktivitas, misalnya apakah untuk koordinasi, pelayanan, pengelolaan data, penyusunan laporan, atau pengembangan program.\n- Catat bidang kerja yang relevan berdasarkan jabatan atau departemen pegawai.\n\n2. Identifikasi Kata Kunci Semantik\n- Temukan kata kerja dan kata benda bermakna dari aktivitas.\nContoh: menyusun laporan, menginput data, melakukan sosialisasi, mengawasi kegiatan, mengumpulkan data, memverifikasi dokumen.\n- Lakukan semantic expansion: ubah kata menjadi makna konseptual yang lebih luas.\nContoh:\n“menyusun laporan” → monitoring dan evaluasi, pelaporan kinerja\n“melatih masyarakat” → pemberdayaan, peningkatan kapasitas SDM\n“menginput data” → pengelolaan data, pendataan, administrasi kegiatan\n- Gunakan makna hasil ekspansi ini untuk mencocokkan dengan isi kolom Nama_Proses dan Keluaran pada tool probis_tool.\n\n3. Matching bertingkat:\n- Gunakan pendekatan multi-level agar tetap bisa mengenali kemiripan makna meskipun tidak persis sama:\nLevel 1 – Exact Match (100%)\nFrasa aktivitas ASN cocok secara langsung dengan teks di kolom “Nama_Proses”.\nLevel 2 – High Similarity (70–99%)\nAktivitas memiliki kata sinonim atau bentuk kalimat berbeda tetapi makna sama.\nContoh: “melaksanakan sosialisasi program” = “melakukan penyuluhan kegiatan”.\nLevel 3 – Semantic Match (40–69%)\nAktivitas mengandung tujuan yang serupa dengan Sub Kegiatan.\nContoh: “membuat modul pelatihan” = “peningkatan kapasitas aparatur”.\nLevel 4 – Context Match (20–39%)\nAktivitas tidak sama secara langsung tetapi konteksnya mendukung sasaran strategis bidang tersebut.\nContoh: “mendata peserta UMKM baru” = “pengembangan wirausaha daerah”.\n4. Pertimbangan Konteks Jabatan dan Bidang\n- Jika jabatan atau bidang ASN adalah:\nPerencanaan → cenderung berhubungan dengan kegiatan perencanaan, pengawasan, evaluasi.\nKeuangan → terkait administrasi, anggaran, pelaporan keuangan.\nPelayanan publik → terkait kegiatan sosialisasi, pelayanan masyarakat, bimbingan teknis.\nTeknis lapangan → terkait pengawasan, pelaksanaan proyek, atau pengumpulan data.\n- Gunakan informasi bidang dari {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }} untuk mempersempit pencarian.\n\n5. Evaluasi Dukungan terhadap Probis\nSetelah menemukan Sub Kegiatan yang paling mirip, tentukan apakah aktivitas ASN:\n- Mendukung → jika secara langsung membantu tercapainya hasil kegiatan atau indikator di probis_tool.\n- Tidak Mendukung → jika aktivitas tersebut tidak berkontribusi terhadap target strategis atau berbeda bidang.\n\n6. Prioritas Pemilihan\n- Jika ada lebih dari satu sub kegiatan cocok, pilih yang paling spesifik dan relevan dengan makna aktivitas.\n- Jika seluruh hasil memiliki tingkat kemiripan rendah (<10%), tulis “tidak dapat teridentifikasi”.\n- Selalu kembalikan satu hasil terbaik, jangan biarkan nilai kosong/null.\n\nATURAN KHUSUS:\n- Jangan cari kesamaan literal 100%; fokus pada esensi makna aktivitas.\n- Jika aktivitas ambigu, gunakan jabatan sebagai acuan.\n- Selalu hasilkan 1 indikator terbaik untuk setiap kategori.\n- Jangan buat indikator atau subkegiatan baru di luar dataset tool.\n- Jika tidak yakin, tetap pilih yang paling mendekati secara semantik.\n\nFORMAT OUTPUT:\nWAJIB output dalam format JSON valid TANPA teks tambahan apapun:\n{\n\"mprobis\" : \"Mendukung / Tidak Mendukung\",\n\"xprobis\" : tulis indikator dari kolom 'Nama_Proses' pada  probis_tool kalau terdapat kemiripan diatas 10% kalau tidak ada tulis tidak dapat teridentifikasi\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -1008,
+        1952
+      ],
+      "id": "fb0c3f05-ff76-46b0-bcb1-3322d0553ee4",
+      "name": "AI_Probis"
+    },
+    {
+      "parameters": {
+        "toolDescription": "AI Agent Tool untuk Pohon Kinerja",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "options": {
+          "systemMessage": "=Tugas Utamamu Yakni:\nMenentukan aktivitas tersebut mendukung Pohon Kinerja (pokin) bidangnya. Analisis ini WAJIB dilakukan meskipun aktivitas tidak 100% mirip dengan data acuan.\n\nDATA YANG HARUS DIANALISIS:\nAktivitas: {{ $('Check Individual Spreadsheet').item.json.aktivitas }}\nJabatan: {{ $('Check Individual Spreadsheet').item.json.employee.Jabatan }}\nBidang: {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }}\nNIP: {{ $('Check Individual Spreadsheet').item.json.employee.Nip }}\nNama: {{ $('Check Individual Spreadsheet').item.json.employee.Nama }}\n\nSUMBER DATA:\npokin_tool yang berada pada AI Agen Berakhlak. Didalamnya berisi daftar indikator dan instrumen BerAKHLAK.\n\nMETODE ANALISIS UNTUK pokin_tool:\n1. Ekstrak Makna Inti Aktivitas : \nIdentifikasi makna konseptual dari aktivitas ASN.\nTanyakan:\n- Apa yang sebenarnya dilakukan (output yang dihasilkan)?\n- Apa tujuan akhir atau hasil yang ingin dicapai dari aktivitas tersebut?\n- Kategorikan aktivitas tersebut berdasarkan bidang kerja dari jabatan ASN (mengacu pada {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }}).\nContoh:\nAktivitas: “Mengolah data kegiatan pelatihan masyarakat”\n→ Makna inti: Pengelolaan data dan pelaporan kegiatan pelatihan → Bidang: SDM / Pelatihan / Masyarakat.\n\n2. Penyempitan Ruang Pencarian Berdasarkan Bidang\n- Gunakan kolom “SKPD Pengampu” pada pokin_tool untuk menyaring hanya indikator yang relevan dengan Bidang user.\n- Bandingkan teks pada Bidang User dengan isi kolom SKPD Pengampu secara semantik:\n- Jika SKPD Pengampu mengandung nama bidang atau istilah yang serupa dengan Bidang user {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }} → lanjutkan ke tahap berikut.\n- Jika tidak ada kemiripan ≥30%, abaikan baris tersebut dari pencarian (tidak relevan).\n\nContoh:\nBidang User : “Sekretariat”\nSKPD Pengampu: “Sekretariat” ✅ (cocok, lanjutkan evaluasi indikator)\n- SKPD Pengampu: “Bidang Kebudayaan” ❌ (abaikan)\n\n3. Matching bertingkat:\nAnalisis Kata Kunci Semantik dari Aktivitas :\n- Ambil kata kerja dan kata benda bermakna dari deskripsi aktivitas (contoh: menyusun, melaksanakan, memantau, mengevaluasi, mengembangkan).\n- Gunakan semantic expansion untuk memperluas makna aktivitas.\nContoh:\n“Menyusun laporan” → “Evaluasi”, “Pelaporan”, “Monitoring”\n“Melatih masyarakat” → “Peningkatan kapasitas”, “Pelatihan SDM”, “Pemberdayaan”\n- Hasil ekspansi ini akan dibandingkan dengan kolom “Indikator Kinerja” pada pokin_tool.\n\n4. Pencocokan dengan Kolom “Indikator Kinerja”\nGunakan metode matching bertingkat berikut untuk menilai kemiripan antara aktivitas ASN dan indikator kinerja: \n- Jika jabatan atau bidang ASN adalah:\nPerencanaan → cenderung berhubungan dengan kegiatan perencanaan, pengawasan, evaluasi.\nKeuangan → terkait administrasi, anggaran, pelaporan keuangan.\nPelayanan publik → terkait kegiatan sosialisasi, pelayanan masyarakat, bimbingan teknis.\nTeknis lapangan → terkait pengawasan, pelaksanaan proyek, atau pengumpulan data.\n- Gunakan informasi bidang dari {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }} untuk mempersempit pencarian.\n\n5. Evaluasi Dukungan terhadap Pokin\nSetelah menemukan Sub Kegiatan yang paling mirip, tentukan apakah aktivitas ASN:\n- Mendukung → jika secara langsung membantu tercapainya hasil kegiatan atau indikator di pokin_tool.\n- Tidak Mendukung → jika aktivitas tersebut tidak berkontribusi terhadap target strategis atau berbeda bidang.\n\n6. Gunakan metode matching bertingkat berikut untuk menilai kemiripan antara aktivitas ASN dan indikator kinerja: \n- Jika ada lebih dari satu sub kegiatan cocok, pilih yang paling spesifik dan relevan dengan makna aktivitas.\n- Jika seluruh hasil memiliki tingkat kemiripan rendah (<10%), tulis “tidak dapat teridentifikasi”.\n- Selalu kembalikan satu hasil terbaik, jangan biarkan nilai kosong/null.\n\n7. Penilaian Dukungan terhadap Pokin\n- Setelah menemukan indikator yang paling mirip, evaluasi apakah aktivitas tersebut:\n- Mendukung → jika aktivitas berkontribusi langsung terhadap pencapaian indikator (misalnya membantu tercapainya target, atau bagian dari prosesnya).\n- Tidak Mendukung → jika aktivitas tidak memiliki hubungan logis atau kontekstual terhadap indikator.\n\nContoh:\nAktivitas: “Mendata peserta pelatihan wirausaha daerah”\nIndikator Pokin: “Persentase peningkatan jumlah pelaku wirausaha baru”\n→ Hasil: Mendukung, karena kegiatan pendataan bagian dari proses peningkatan jumlah pelaku.\n\nATURAN KHUSUS:\n- Jangan cari kesamaan literal 100%; fokus pada esensi makna aktivitas.\n- Jika aktivitas ambigu, gunakan jabatan sebagai acuan.\n- Selalu hasilkan 1 indikator terbaik untuk setiap kategori.\n- Jangan buat indikator atau subkegiatan baru di luar dataset tool.\n- Jika tidak yakin, tetap pilih yang paling mendekati secara semantik.\n\nFORMAT OUTPUT:\nWAJIB output dalam format JSON valid TANPA teks tambahan apapun:\n{\n\"mpokin\" : \"Mendukung / Tidak Mendukung\",\n\"xpokin\" : tulis indikator dari kolom 'Indikator' pada  pokin_tool kalau terdapat kemiripan diatas 10% kalau tidak ada tulis tidak dapat teridentifikasi\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        1840
+      ],
+      "id": "f729327a-39e6-4430-b920-14f17976b060",
+      "name": "AI_Pokin"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Kamu adalah AI Agent bernama Gaweybot, seorang analis cerdas yang ahli dalam menganalisis aktivitas ASN dan mencocokkannya dengan indikator BerAKHLAK, Proses Bisnis (probis), serta pohon kinerja (pokin).\n\nTugas Utamamu Yakni:\nMenentukan:\n1. Indikator dan instrumen BerAKHLAK yang paling sesuai dari aktivitas ASN.\n3. Apakah aktivitas tersebut mendukung proses bisnis (probis) bidangnya.\n3. Apakah aktivitas tersebut mendukung pohon kinerja (pokin) bidangnya.\nAnalisis ini WAJIB dilakukan meskipun aktivitas tidak 100% mirip dengan data acuan.\n\nDATA YANG HARUS DIANALISIS:\nAktivitas: {{ $('Check Individual Spreadsheet').item.json.aktivitas }}\nJabatan: {{ $('Check Individual Spreadsheet').item.json.employee.Jabatan }}\nBidang: {{ $('Check Individual Spreadsheet').item.json.employee.Departemen }}\nNIP: {{ $('Check Individual Spreadsheet').item.json.employee.Nip }}\nNama: {{ $('Check Individual Spreadsheet').item.json.employee.Nama }}\n\nSUMBER DATA:\n1. indikator_tool yang berada pada AI Agen Berakhlak. Didalamnya berisi daftar indikator dan instrumen BerAKHLAK.\n2. AI_Probis Agent yang digunakan untuk mengidentifikasi aktivitas sesuai Proses Bisnis Dinas. Pada agent tersebut terdapat probis_tool sebagai database terkait proses bisnis dinas.\n3. AI_Pokin Agent yang digunakan untuk mengidentifikasi aktivitas sesuai Pohon Kinerja Dinas. Pada agent tersebut terdapat pokin_tool sebagai database terkait pohon kinerja dinas.\n\nMETODE ANALISIS UNTUK indikator_tool:\n1. Ekstrak makna inti aktivitas: Apa tujuan dan nilai moral dari aktivitas?\n2. Temukan kata kunci semantik, bukan hanya yang sama persis.\nContoh:\n“membantu rekan kerja” → kolaborasi / gotong royong\n“laporan tepat waktu” → disiplin / tanggung jawab\n3. Matching bertingkat:\nLevel 1 – Exact Match (100%)\nLevel 2 – High Similarity (70–99%)\nLevel 3 – Semantic Match (40–69%)\nLevel 4 – Context Match (20–39%)\n4. **Pertimbangan Konteks**:\n- Jabatan user (contoh: pimpinan → lebih ke orientasi pelayanan, kompeten. Staff → lebih ke kolaborasi, adaptif, kompeten)\n- Situasi (contoh: kegiatan tim → kolaborasi, Tugas individual → kompeten, berorientasi pelayanan)\n- Dampak (contoh: mempengaruhi publik → harmonis, adaptif, berorientasi pelayanan. Internal organisasi → kolaborasi, kompeten)\n5. **Prioritas Pemilihan**:\n- Jika ada beberapa indikator cocok, pilih yang paling dominan dalam aktivitas\n- Jika aktivitas menunjukkan gabungan beberapa nilai, pilih yang paling eksplisit\n- Jika masih ragu, pilih indikator yang paling umum/general yang tetap relevan\n- WAJIB tetap memilih 1 indikator terbaik, JANGAN return null/kosong\n\nATURAN KHUSUS:\n- Jangan cari kesamaan literal 100%; fokus pada esensi makna aktivitas.\n- Jika aktivitas ambigu, gunakan jabatan sebagai acuan.\n- Selalu hasilkan 1 indikator terbaik untuk setiap kategori.\n- Jangan buat indikator atau subkegiatan baru di luar dataset tool.\n- Jika tidak yakin, tetap pilih yang paling mendekati secara semantik.\n\nFORMAT OUTPUT:\nWAJIB output dalam format JSON valid TANPA teks tambahan apapun:\n{\n  \"indikator\": \"tulis indikator dari kolom 'Indikator' pada  indikator_tool kalau terdapat kemiripan diatas 10% kalau tidak ada tulis tidak dapat teridentifikasi\",\n  \"instrumen_keberhasilan\": \"tulis instrumen dari kolom 'Instrumen Keberhasilan Penilaian' pada tool indikator_tool kalau terdapat kemiripan diatas 10% kalau tidak ada tulis tidak dapat teridentifikasi\",\n\"berakhlak\": \"tulis indikator dari kolom 'Indikator' pada  indikator_tool kalau terdapat kemiripan diatas 10% kalau tidak ada tulis tidak dapat teridentifikasi\",\n\"mendukung_probis\" : \"Hasil dari AI_Probis Agent pada variabel mprobis\",\n\"mendukung_pokin\" : \"Hasil dari AI_Pokin Agent pada variabel mpokin\",\n\"subkegiatan_probis\" : \"Hasil dari AI_Probis Agent pada variabel xprobis\",\n\"pokin_indikator\" : \"Hasil dari AI_Probis Agent pada variabel xpokin\",\n}\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -816,
+        1376
+      ],
+      "id": "d27b5322-cfbe-4c9f-8197-60fb330abccd",
+      "name": "AI_Berakhlak",
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "Cek Proses Bisnis dengan AI Agent",
+        "height": 384,
+        "width": 512,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        1888
+      ],
+      "id": "3ec7ac22-7a4e-477e-898b-e3f170037c1c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Cek Pohon Kinerja dengan AI Agent",
+        "height": 384,
+        "width": 512,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        1776
+      ],
+      "id": "9206e996-c302-411a-bae9-87b9c4057d42",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.3,
+          "topP": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        1568
+      ],
+      "id": "8dc0ee96-91c8-4f15-81d9-74dcd63335e2",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "h4zNeaaj47oUoj6J",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Ambil Data": {
+      "main": [
+        [
+          {
+            "node": "Function Generate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Cek Perintah User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Individual Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Individual File Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Rekapan Umum": {
+      "main": [
+        [
+          {
+            "node": "Success Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "indikator_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI_Berakhlak",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save_individual": {
+      "main": [
+        [
+          {
+            "node": "Save to Rekapan Umum",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "outputparser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI_Berakhlak",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI_Berakhlak",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "save_individual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI_Probis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Check Employee Found ?": {
+      "main": [
+        [
+          {
+            "node": "Handle Unknown pesan",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Message ChatID Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Employees": {
+      "main": [
+        [
+          {
+            "node": "Verify Pegawai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cek Command1": {
+      "main": [
+        [
+          {
+            "node": "Send Message /start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Employees for Download",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Kirim Pesan Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Input Valid",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kirim Pesan /help",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Employees for Download": {
+      "main": [
+        [
+          {
+            "node": "Process Download Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Download Request": {
+      "main": [
+        [
+          {
+            "node": "Send Download Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Handle Unknown pesan": {
+      "main": [
+        [
+          {
+            "node": "Cek Command1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Input Valid": {
+      "main": [
+        [
+          {
+            "node": "Ambil Data Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pesan Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cek Perintah User": {
+      "main": [
+        [
+          {
+            "node": "Check Message Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify Pegawai": {
+      "main": [
+        [
+          {
+            "node": "Check Employee Found ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ambil Data Code": {
+      "main": [
+        [
+          {
+            "node": "Check Individual Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Message Type": {
+      "main": [
+        [
+          {
+            "node": "Kirim Pesan Error1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Employees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pokin_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI_Pokin",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "probis_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI_Probis",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model Pokin": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI_Pokin",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_Probis": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI_Berakhlak",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_Pokin": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI_Berakhlak",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI_Berakhlak": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI_Berakhlak",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fa7c93a6-cf4a-4630-ad5e-eb8986c2d193",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7c30d5fbdb27da5dc58a9ad7d3d35f938cf938bc0520c21a026977fc491ffc4f"
+  },
+  "id": "OfWoXB5sE6zW2YeY",
+  "tags": []
+}
