@@ -1,7 +1,7 @@
 JEJAK ASN – Workflow n8n untuk Penginputan Aktivitas Kinerja ASN
 
 Deskripsi Singkat:
-JEJAK ASN adalah workflow automation berbasis n8n yang dirancang untuk mempermudah proses penginputan, pencatatan, dan analisis aktivitas kinerja Aparatur Sipil Negara (ASN). Sistem ini membantu setiap ASN mencatat kegiatan hariannya secara efisien, terstruktur, dan terhubung langsung dengan indikator BerAKHLAK serta proses bisnis (probis) dan pohon kinerja (pokin) instansi.
+JEJAK ASN (Jejaring Elektronik Jurnal Aktivitas Kinerja Aparatur Sipil Negara) adalah sistem pencatatan kinerja harian yang mengintegrasikan 4 platform utama dalam satu alur kerja otomatis, yaitu Telegram sebagai antarmuka pengguna untuk melakukan input aktivitas pegawai melalui chat, n8n sebagai workflow automation engine yang mengatur alur pemrosesan data, AI Agent untuk melakukan analisis terhadap aktivitas pegawai (keselarasan dengan proses bisnis, pohon kinerja organisasi, dan nilai dasar ASN BerAKHLAK), serta Google Workspace (Sheets & Drive) sebagai penyedia database dan storage. Pegawai cukup mengirim pesan singkat di Telegram seperti chatting biasa, kemudian sistem secara otomatis memvalidasi, menganalisis, dan memberikan feedback real-time dalam waktu lebih kurang 15 detik tentang relevansi pekerjaan mereka terhadap proses bisnis, kinerja organisasi, dan nilai dasar ASN. Solusi ini menjawab akar masalah mengenai lemahnya akuntabilitas kinerja ASN dengan menyediakan mekanisme dokumentasi yang praktis, sederhana, namun mampu mendukung pengelolaan dan penilaian kinerja ASN berbasis bukti dan data.
 
 Tujuan Proyek : 
 Mendukung digitalisasi kinerja ASN dengan sistem yang transparan, efisien, dan terotomasi, sejalan dengan semangat Smart Governance dan nilai BerAKHLAK ASN.
