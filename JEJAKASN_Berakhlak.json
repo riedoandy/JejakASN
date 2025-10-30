@@ -1,0 +1,524 @@
+{
+  "name": "JEJAKASN_Berakhlak",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.NamaFile }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        464
+      ],
+      "id": "ba3a523e-6922-48a4-baf2-4d2cd5d0a962",
+      "name": "Ambil Sheet Individual Pegawai",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ambil data dari node sebelumnya\nconst aktivitas = $json.Aktivitas || '';\nconst nama = $json.Nama || '';\nconst nip = $json.Nip || '';\nconst tanggal = $json.Tanggal || '';\nconst rowIndex = $itemIndex;\n\n// Data pegawai dari loop utama\nconst pegawai = $('Looping').item.json;\nconst namaFile = $('Dari Workflow Utama').first().json.NamaFile;\n\nreturn [{\n  json: {\n    nip: nip,\n    nama_pegawai: nama,\n    aktivitas: aktivitas,\n    tanggal: tanggal,\n    jabatan: pegawai.Jabatan || '',\n    departemen: pegawai.Departemen || '',\n    row_index: rowIndex + 2, // +2 karena header di row 1, data mulai row 2\n    sheet_id: namaFile\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        336
+      ],
+      "id": "5b59b585-bc06-4cff-bef5-6c16f584ed34",
+      "name": "Persiapan Data untuk AI"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Kamu adalah AI Agent bernama JejakASN, seorang analis cerdas yang ahli dalam menganalisis aktivitas ASN dan mencocokkannya dengan indikator Berakhlak.\n\nTUGAS UTAMA:\nAnalisis aktivitas berikut dan tentukan:\n1. Indikator BerAKHLAK yang paling sesuai\n2. Instrumen keberhasilan yang relevan\n\nDATA AKTIVITAS:\n- Nama: {{ $json.nama_pegawai }}\n- Jabatan: {{ $json.jabatan }}\n- Departemen: {{ $json.departemen }}\n- Aktivitas: {{ $json.aktivitas }}\n- Tanggal: {{ $json.tanggal }}\n\nMETODE ANALISIS:\n1. Pahami makna inti dari aktivitas\n2. Identifikasi kata kunci semantik yang relevan\n3. Cocokkan dengan data berakhlak_tool\n4. Pertimbangkan konteks jabatan dan situasi\n5. WAJIB pilih 1 indikator terbaik, JANGAN return null/kosong\n\nPRIORITAS PEMILIHAN:\n- Jika ada beberapa indikator cocok, pilih yang paling dominan\n- Jika aktivitas menunjukkan gabungan nilai, pilih yang paling eksplisit\n- Jika ragu, pilih yang paling umum/general yang tetap relevan\n\nCONTOH MAPPING:\n- \"menyusun anggaran\" → Akuntabel / Kompeten\n- \"koordinasi tim\" → Kolaboratif\n- \"melayani masyarakat\" → Berorientasi Pelayanan\n- \"belajar teknologi baru\" → Kompeten / Adaptif\n\nFORMAT OUTPUT (JSON only, NO text tambahan):\n{\n  \"berakhlak\": \"[Nama Indikator dari tool]\",\n  \"instrumen\": \"[Instrumen Keberhasilan yang sesuai]\"\n}\n\nWAJIB menggunakan data dari berakhlak_tool yang tersedia.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        336
+      ],
+      "id": "ad2754bf-5d9c-4d24-b16d-e19f6aeee7d4",
+      "name": "AI Agent - Analisis Berakhlak"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        656,
+        560
+      ],
+      "id": "305a34f8-2217-41f8-9ece-f3aec58152bf",
+      "name": "Google Gemini Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "uaixd3tsExnCv5po",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validasi dan fallback jika AI gagal\nconst aiOutput = $input.first().json.output;\nconst aktivitas = $('Persiapan Data untuk AI').first().json.aktivitas;\nconst rowData = $('Persiapan Data untuk AI').first().json;\n\n// Daftar indikator valid\nconst validIndikators = [\n  'Berorientasi Pelayanan',\n  'Akuntabel',\n  'Kompeten',\n  'Harmonis',\n  'Loyal',\n  'Adaptif',\n  'Kolaboratif'\n];\n\nlet finalIndikator = aiOutput?.berakhlak || '';\nlet finalInstrumen = aiOutput?.instrumen || '';\n\n// Fallback jika AI gagal atau return kosong\nif (!finalIndikator || finalIndikator === '' || finalIndikator === 'null' || !validIndikators.includes(finalIndikator)) {\n  const aktivitasLower = aktivitas.toLowerCase();\n  \n  // Simple keyword matching sebagai fallback\n  if (aktivitasLower.includes('kerjasama') || aktivitasLower.includes('koordin') || aktivitasLower.includes('tim')) {\n    finalIndikator = 'Kolaboratif';\n    finalInstrumen = 'Melakukan kerjasama tim dalam menyelesaikan tugas';\n  } else if (aktivitasLower.includes('anggaran') || aktivitasLower.includes('lapor') || aktivitasLower.includes('dokumen')) {\n    finalIndikator = 'Akuntabel';\n    finalInstrumen = 'Melaksanakan tugas dengan jujur, bertanggung jawab, cermat, disiplin, dan berintegritas tinggi';\n  } else if (aktivitasLower.includes('belajar') || aktivitasLower.includes('mempelajari') || aktivitasLower.includes('analisis')) {\n    finalIndikator = 'Kompeten';\n    finalInstrumen = 'Meningkatkan kompetensi diri untuk menjawab tantangan yang selalu berubah';\n  } else if (aktivitasLower.includes('layanan') || aktivitasLower.includes('melayani') || aktivitasLower.includes('masyarakat')) {\n    finalIndikator = 'Berorientasi Pelayanan';\n    finalInstrumen = 'Memahami dan memenuhi kebutuhan masyarakat';\n  } else {\n    // Default fallback\n    finalIndikator = 'Kompeten';\n    finalInstrumen = 'Melaksanakan tugas dengan kualitas terbaik';\n  }\n}\n\nreturn [{\n  json: {\n    nip: rowData.nip,\n    nama: rowData.nama_pegawai,\n    aktivitas: aktivitas,\n    berakhlak: finalIndikator,\n    instrumen: finalInstrumen,\n    row_index: rowData.row_index,\n    sheet_id: rowData.sheet_id,\n    ai_original: aiOutput,\n    is_fallback: !aiOutput?.berakhlak || aiOutput.berakhlak === ''\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        336
+      ],
+      "id": "b4fe6cad-d0a5-4564-88a4-5466451a24ae",
+      "name": "Validasi & Fallback"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.sheet_id }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Berakhlak": "={{ $json.berakhlak }}",
+            "Aktivitas": "={{ $json.aktivitas }}"
+          },
+          "matchingColumns": [
+            "Aktivitas"
+          ],
+          "schema": [
+            {
+              "id": "Nip",
+              "displayName": "Nip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Aktivitas",
+              "displayName": "Aktivitas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tanggal",
+              "displayName": "Tanggal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Berakhlak",
+              "displayName": "Berakhlak",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chatID",
+              "displayName": "chatID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Mendukung Probis",
+              "displayName": "Mendukung Probis",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Mendukung Pokin",
+              "displayName": "Mendukung Pokin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Probisnya Apa",
+              "displayName": "Probisnya Apa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pokin Yang Mana",
+              "displayName": "Pokin Yang Mana",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1344,
+        336
+      ],
+      "id": "865784e4-5713-4263-b582-2b1ef5cf29b5",
+      "name": "Update Kolom Berakhlak",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oem-koGzbdzFFox2Ey7dFyqBxbnrKdibXCqyyjj-Qlc",
+          "mode": "list",
+          "cachedResultName": "Data Dari n8n"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1824349580,
+          "mode": "list",
+          "cachedResultName": "Indikator_Berakhlak"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        560
+      ],
+      "id": "144f8aed-1084-4bc8-ae78-8eda35c391d8",
+      "name": "beakhlak_tool",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t2JlxVY2Sbx98Jhf",
+          "name": "Google Veo Sheet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"berakhlak\": \"\",\n  \"instrumen\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        560
+      ],
+      "id": "facd9843-c17f-49eb-a672-c9815299dd7c",
+      "name": "berakhlakoutput"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "Nip"
+            },
+            {
+              "name": "Nama"
+            },
+            {
+              "name": "Jabatan"
+            },
+            {
+              "name": "Departemen"
+            },
+            {
+              "name": "IDtelegram",
+              "type": "number"
+            },
+            {
+              "name": "NamaFile"
+            },
+            {
+              "name": "row_number",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "Dari Workflow Utama",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -240,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        336
+      ],
+      "id": "94e423b3-dbfd-4979-aac4-81593cde62df",
+      "name": "Wait",
+      "webhookId": "874d2c2c-2cad-4b18-bff5-3a09ca3c96fd"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        464
+      ],
+      "id": "c92a3e81-9ef0-41c3-9749-87db2e070bc2",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        208,
+        464
+      ],
+      "id": "52a9af59-68b3-42dd-af15-3550fb2cfd4a",
+      "name": "Looping"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Ambil Sheet Individual Pegawai": {
+      "main": [
+        [
+          {
+            "node": "Looping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Persiapan Data untuk AI": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Analisis Berakhlak",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Analisis Berakhlak": {
+      "main": [
+        [
+          {
+            "node": "Validasi & Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Analisis Berakhlak",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validasi & Fallback": {
+      "main": [
+        [
+          {
+            "node": "Update Kolom Berakhlak",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "beakhlak_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Analisis Berakhlak",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "berakhlakoutput": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Analisis Berakhlak",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Kolom Berakhlak": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dari Workflow Utama": {
+      "main": [
+        [
+          {
+            "node": "Ambil Sheet Individual Pegawai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Looping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Looping": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Persiapan Data untuk AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fd9753d9-15e0-4581-8fde-47df39d69fd3",
+  "meta": {
+    "instanceId": "7c30d5fbdb27da5dc58a9ad7d3d35f938cf938bc0520c21a026977fc491ffc4f"
+  },
+  "id": "xcPpWjMqSQ4MV72x",
+  "tags": []
+}
